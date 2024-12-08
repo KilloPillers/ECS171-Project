@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Titanic Machine Learning Classification Project</title>
+</head>
+<body>
+    <h1>Titanic ML Classification Project</h1>
+    <form method="POST" action="/predict">
+
+        <label for="input">Enter age of passenger:</label> 
+        <input type="number" name="age" id="input" min="1" max="120" required>
+        <br>
+
+        <label for="input">Enter passenger's class:</label> 
+        <input type="number" name="pclass" id="input" min="1" max="3" required>
+        <br>
+
+        <label for="input">Enter passenger's class:</label>        
+        <label>
+            <input type="radio" name="pclass" value=1 required> 1st class
+        </label>
+        
+        <label>
+            <input type="radio" name="pclass" value=2> 2nd class
+        </label>
+
+        <label>
+            <input type="radio" name="pclass" value=3> 3rd class
+        </label>
+        <br>
+
+        <label for="input">Enter sex of passenger:</label>        
+        <label>
+            <input type="radio" name="sex" value=0 required> Male
+        </label>
+        
+        <label>
+            <input type="radio" name="sex" value=1> Female
+        </label>
+        <br>
+
+        <label for="input">Enter number of siblings/spouses on board:</label> 
+        <input type="number" name="sibsp" id="input" min="0" max="10" required>
+        <br>
+
+        <label for="input">Enter number of parents/children on board:</label> 
+        <input type="number" name="parch" id="input" min="0" max="10" required>
+        <br>
+
+        <label for="input">Enter ticket fare:</label> 
+        <input type="number" name="fare" id="input" min="0" max="10" step=0.0001 required>
+        <br>
+
+        <br>
+        <button type="submit">Predict</button>
+
+    </form>
+</body>
+</html>
