@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request
-import joblib  # Replace with your machine learning model import
+import joblib 
+from pydantic import BaseModel
+import numpy as np
 
 app = Flask(__name__)
 
-# Load your pre-trained machine learning model here
-model = joblib.load("random_forest.joblib")  
+# Load pre-trained machine learning model here
+model = joblib.load("random_forest.joblib")
 
 @app.route("/")
 def index():
@@ -14,30 +16,45 @@ def index():
 def predict():
     if request.method == "POST":
         # Get user input from the form
-        age = int(request.form.get("age"))
-        sex = int(request.form.get("sex"))
-        pclass = int(request.form.get("pclass"))
-        sibsp = int(request.form.get("sibsp"))
-        parch = int(request.form.get("parch"))
+        age = float(request.form.get("age"))
+        sex = float(request.form.get("sex"))
+        pclass = float(request.form.get("pclass"))
+        sibsp = float(request.form.get("sibsp"))
+        parch = float(request.form.get("parch"))
         fare = float(request.form.get("fare"))
-        parch = int(request.form.get("parch"))
+        embarked = float(request.form.get("embarked"))
         
+        if (sibsp == 0 and parch == 0):
+            alone = 1.0
+        else:
+            alone = 0.0
+        
+        familiars = 1 + sibsp + parch
 
         print(f"----{age=}")
+        print(f"----{sex=}")
+        print(f"----{pclass=}")
+        print(f"----{sibsp=}")
+        print(f"----{parch=}")
+        print(f"----{fare=}")
+        print(f"----{embarked=}")
 
+        # Convert input data to a numpy array
+        input_features = np.array([[pclass, sex, age, sibsp, parch, fare, 1.0, embarked, alone, familiars]])
 
-        # Preprocess the input data for your model (if needed)
-        # ... your data preprocessing code here ...
+        # scale features
+        scaler = joblib.load("scaler.joblib")
+        input_features = scaler.transform(input_features)
 
-        preprocessed_data = input_data
-
-        # Make prediction using your model
-        prediction = model.predict([preprocessed_data])  # Assuming a list input
-
+        # Make prediction
+        prediction = model.predict(input_features)
+        
         # Format the prediction for display
-        predicted_class = prediction[0]  # Assuming single class output
-
-        return render_template("result.html", prediction=predicted_class)
+        survival = prediction[0]  # 0 -> dead, 1 -> alive
+        if survival == 0:
+            return render_template("result_dead.html")
+        else:
+            return render_template("result_alive.html")
 
     else:
         return "Something went wrong. Please try again."
