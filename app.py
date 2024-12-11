@@ -14,7 +14,17 @@ def index():
 def predict():
     if request.method == "POST":
         # Get user input from the form
-        input_data = request.form.get("input")
+        age = int(request.form.get("age"))
+        sex = int(request.form.get("sex"))
+        pclass = int(request.form.get("pclass"))
+        sibsp = int(request.form.get("sibsp"))
+        parch = int(request.form.get("parch"))
+        fare = float(request.form.get("fare"))
+        parch = int(request.form.get("parch"))
+        
+
+        print(f"----{age=}")
+
 
         # Preprocess the input data for your model (if needed)
         # ... your data preprocessing code here ...
